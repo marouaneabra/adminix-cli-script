@@ -6,25 +6,26 @@
 # Initial flag settings for OS check
 # Mac
 mac=false
-# x86_64
-x=false
 # amd64
 amd=false
 # armhf
 arm=false
 
-# Initial check for OS
+# Initial check for OS type
 
 # Check for Mac
-# Check for x86_64
+if [[ "$OSTYPE" == "darwin"* ]]
+then
+    mac=true
+fi
+
+# Check for amd64
 MACHINE=$(uname -m)
 if [[ $MACHINE == "x86_64" ]]
 then
-    x=true
+    amd=true
 fi
-echo "$x"
 
-# Check for amd64
 # Check for armhf
 
 # Check for must have libs
@@ -35,8 +36,6 @@ IS_GIT=$?
 if [ $IS_GIT -ne 0 ]
 then
     echo "Git is not installed"
-else
-    echo "Git is installed"
 fi
 
 INFO=$(cat /etc/os-release)
