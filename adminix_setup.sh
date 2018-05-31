@@ -53,7 +53,27 @@ then
 	sudo apt install git-all
     elif $ARM
     then
-	aptitude install git
+	sudo apt-get update
+	sudo apt-get install git
+    fi
+fi
+
+# Check for vim
+vim --version 2>&1 >/dev/null
+IS_VIM=$?
+if [ $IS_VIM -ne 0 ]
+then
+    if $MAC
+    then
+	brew install vim
+    elif $AMD
+    then
+	sudo apt-get install vim
+    elif $ARM
+    then
+	sudo apt-get update
+	sudo apt-get install vim-runtime
+	sudo apt-get install vim
     fi
 fi
 
