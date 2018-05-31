@@ -91,7 +91,7 @@ fi
 # Check for cURL 
 curl --version 2>&1 >/dev/null
 IS_CURL=$?
-if [ $IS_VIM -ne 0 ]
+if [ $IS_CURL -ne 0 ]
 then
     if $MAC
     then
@@ -103,5 +103,28 @@ then
     then
 	sudo apt-get update
 	sudo apt-get install php5-curl
+    fi
+fi
+
+# Check for gcc
+gcc --version 2>&1 >/dev/null
+IS_GCC=$?
+if [ $IS_GCC -ne 0 ]
+then
+    if $MAC
+    then
+	brew install gcc
+    elif $AMD
+    then
+	sudo apt-get install build-essential
+    elif $ARM
+    then
+	git clone https://bitbucket.org/sol_prog/raspberry-pi-gcc-binary.git
+	cd raspberry-pi-gcc-binary
+	tar xf gcc-8.1.0.tar.bz2
+	sudo mv gcc-8.1.0 /usr/local
+	export PATH=/usr/local/gcc-8.1.0/bin:$PATH
+	cd ..
+	cd rm -rf raspberry-pi-gcc-binary
     fi
 fi
