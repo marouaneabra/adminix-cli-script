@@ -170,3 +170,42 @@ then
 	sudo apt-get install docker-ce
     fi
 fi
+
+
+# Ruby Install
+ruby --version 2>&1 >/dev/null
+IS_RUBY=$?
+if [ $IS_RUBY -ne 0 ]
+then
+    if $MAC
+    then
+	brew install ruby
+    elif $AMD
+    then
+	sudo apt-get install ruby-full
+    elif $ARM
+    then
+	sudo apt-get install rubygems
+    fi
+fi
+
+# Install Adminix Gem
+gem install adminix
+
+# Add user to sudo group
+# sudo adduser <username> sudo
+
+# Install Nginx
+if ! which nginx > /dev/null 2>&1
+then
+    if $MAC
+    then
+	brew install nginx
+    elif $AMD
+    then
+	sudo apt-get install nginx
+    elif $ARM
+    then
+	sudo apt-get install nginx
+    fi
+fi
