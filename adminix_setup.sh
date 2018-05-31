@@ -36,7 +36,7 @@ then
     ARM=true
 fi
 
-#################################################################
+#------------------------------------------------------------------------#
 
 # Check for must have libs
 
@@ -45,7 +45,16 @@ git --version 2>&1 >/dev/null
 IS_GIT=$?
 if [ $IS_GIT -ne 0 ]
 then
-    echo "Git is not installed"
+    if $MAC
+    then
+	brew install git
+    elif $AMD
+    then
+	sudo apt install git-all
+    elif $ARM
+    then
+	aptitude install git
+    fi
 fi
 
 INFO=$(cat /etc/os-release)
