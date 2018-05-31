@@ -5,28 +5,38 @@
 
 # Initial flag settings for OS check
 # Mac
-mac=false
+MAC=false
 # amd64
-amd=false
+AMD=false
 # armhf
-arm=false
+ARM=false
 
 # Initial check for OS type
 
 # Check for Mac
 if [[ "$OSTYPE" == "darwin"* ]]
 then
-    mac=true
+    MAC=true
 fi
 
 # Check for amd64
 MACHINE=$(uname -m)
 if [[ $MACHINE == "x86_64" ]]
 then
-    amd=true
+    AMD=true
 fi
 
 # Check for armhf
+# This will output the primary architecture of the machine
+# Returns either "armhf" running 32-bit ARM Debian or Ubuntu
+# or "arm64" on a machine running 64-bit ARM
+ARCH=$(dpkg --print-architecture)
+if [[ $ARCH == "armhf" ]] || [[ $ARCH == "arm64" ]]
+then
+    ARM=true
+fi
+
+#################################################################
 
 # Check for must have libs
 
