@@ -40,6 +40,17 @@ fi
 
 # Check for must have libs
 
+# Install brew for Mac
+if $MAC
+then
+    brew help 2>&1 >/dev/null
+    IS_BREW=$?
+    if [ $IS_BREW -ne 0 ]
+    then
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+fi
+
 # Check if git is installed
 git --version 2>&1 >/dev/null
 IS_GIT=$?
@@ -77,12 +88,20 @@ then
     fi
 fi
 
-INFO=$(cat /etc/os-release)
-
-if [[ $INFO == *"Raspbian"* ]] || [[ $INFO == *"Debian"* ]]
+# Check for cURL 
+curl --version 2>&1 >/dev/null
+IS_CURL=$?
+if [ $IS_VIM -ne 0 ]
 then
-    echo "It's a Raspberry"
-else
-    echo "It's not a Raspberry"
+    if $MAC
+    then
+	brew install curl
+    elif $AMD
+    then
+	sudo apt-get install curl
+    elif $ARM
+    then
+	sudo apt-get update
+	sudo apt-get install php5-curl
+    fi
 fi
-echo "$INFO"
