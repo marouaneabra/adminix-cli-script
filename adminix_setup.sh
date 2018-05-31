@@ -36,9 +36,7 @@ then
     ARM=true
 fi
 
-#------------------------------------------------------------------------#
-
-# Check for must have libs
+# Check for MUST have libs
 
 # Install brew for Mac
 if $MAC
@@ -49,6 +47,12 @@ then
     then
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
+fi
+
+# Update the apt package index
+if $AMD || $ARM
+then
+    sudo apt-get update
 fi
 
 # Check if git is installed
@@ -64,7 +68,6 @@ then
 	sudo apt install git-all
     elif $ARM
     then
-	sudo apt-get update
 	sudo apt-get install git
     fi
 fi
@@ -82,7 +85,6 @@ then
 	sudo apt-get install vim
     elif $ARM
     then
-	sudo apt-get update
 	sudo apt-get install vim-runtime
 	sudo apt-get install vim
     fi
@@ -101,7 +103,6 @@ then
 	sudo apt-get install curl
     elif $ARM
     then
-	sudo apt-get update
 	sudo apt-get install php5-curl
     fi
 fi
@@ -126,5 +127,46 @@ then
 	export PATH=/usr/local/gcc-8.1.0/bin:$PATH
 	cd ..
 	cd rm -rf raspberry-pi-gcc-binary
+    fi
+fi
+
+# DOCKER check
+
+# Uninstall older versions of Docker
+sudo apt-get remove docker docker-engine docker.io
+
+docker --version 2>&1 >/dev/null
+IS_DOCKER=$?
+if [ $IS_DOCKER -ne 0 ]
+then
+    if $MAC
+    then
+	brew install docker-ce
+    elif $AMD
+    then
+	sudo apt-get install \
+	     apt-transport-https \
+	     ca-certificates \
+	     curl \
+	     software-properties-common
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo add-apt-repository \
+	     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+	sudo apt-get install docker-ce
+    elif $ARM
+    then
+        sudo apt-get install \
+	     apt-transport-https \
+	     ca-certificates \
+	     curl \
+	     software-properties-common
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository \
+	     "deb [arch=armhf] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+	sudo apt-get install docker-ce
     fi
 fi
