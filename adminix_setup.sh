@@ -45,6 +45,7 @@ if [[ $MACHINE == "x86_64" ]]; then
 	      "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
+    sudo apt-get update
     sudo apt-get install docker-ce
   
 elif [ -x "$(command -v brew)" ]; then
@@ -70,6 +71,7 @@ elif [[ $ARCH == "armhf" ]] || [[ $ARCH == "arm64" ]]; then
 	       "deb [arch=armhf] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
+     sudo apt-get update
      sudo apt-get install docker-c
 fi
 
