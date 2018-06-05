@@ -57,7 +57,7 @@ elif [ -x "$(command -v brew)" ]; then
 # This will output the primary architecture of the machine
 # Returns either "armhf" running 32-bit ARM Debian or Ubuntu
 # or "arm64" on a machine running 64-bit ARM
-elif [[ $ARCH == "armhf" ]] || [[ $ARCH == "arm64" ]]
+elif [[ $ARCH == "armhf" ]] || [[ $ARCH == "arm64" ]]; then
      echo "..."
      echo "Installing Docker..."
      sudo apt-get install \
